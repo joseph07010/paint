@@ -43,7 +43,7 @@ class PaintView:View {
         params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
     }
     object SharedData{
-        val timeList: MutableList<Int> = mutableListOf()
+        val timeList: MutableList<Long> = mutableListOf()
     }
 
 
@@ -58,14 +58,14 @@ class PaintView:View {
             MotionEvent.ACTION_DOWN -> {
                 path.moveTo(x,y)
 
-                timeList.add(System.currentTimeMillis().toInt())
+                timeList.add(System.currentTimeMillis())
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
                 path.lineTo(x,y)
                 pathList.add(path)
                 colorList.add(currentBrush)
-                timeList.add(System.currentTimeMillis().toInt())
+                timeList.add(System.currentTimeMillis())
             }
             else -> return false
 
