@@ -4,51 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/spiral_shape"
     tools:context=".MainActivity">
-
-<!--    <com.example.line_spiral_drawer.CanvasView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent" />-->
 
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/purple_200"
-        android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/redColor"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/red_background"
-            android:contentDescription="TODO" />
-        <ImageButton
-            android:id="@+id/blueColor"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/blue_background"
-            android:contentDescription="TODO" />
-        <ImageButton
-            android:id="@+id/blackColor"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/black_background"
-            android:contentDescription="TODO" />
+        <Button
+            android:id="@+id/eraseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/erase" />
 
-        <ImageButton
-            android:id="@+id/whiteColor"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/white_background"
-            tools:ignore="ImageContrastCheck"
-            android:contentDescription="TODO" />
+        <Button
+            android:id="@+id/recordButton"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/record" />
 
     </LinearLayout>
 
@@ -57,33 +34,13 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="37dp"
-            tools:layout_editor_absoluteY="26dp" />
-
         <include
             android:id="@+id/include"
             layout="@layout/paint_view"
-            android:layout_width="1043dp"
-            android:layout_height="1584dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_conversion_absoluteHeight="662dp"
-            tools:layout_conversion_absoluteWidth="411dp" />
-
-        <Button
-            android:id="@+id/timerecord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="time"
-            tools:layout_editor_absoluteX="88dp"
-            tools:layout_editor_absoluteY="90dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

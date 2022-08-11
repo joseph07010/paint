@@ -1,64 +1,56 @@
 package com.example.line_spiral_drawer
 
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Toast
-import com.example.line_spiral_drawer.PaintView.Companion.colorList
-import com.example.line_spiral_drawer.PaintView.Companion.currentBrush
 import com.example.line_spiral_drawer.PaintView.Companion.pathList
+import com.example.line_spiral_drawer.databinding.ActivityMainBinding
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
 
 class MainActivity : AppCompatActivity() {
+
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     companion object{
         var path = Path()
         var paintBrush = Paint()
+    }
+    private fun writeTextFile(directory: String, filename: String, content: String, b: Boolean){
+        val dir = File(filesDir.path + "/" + directory)
+        if(!dir.exists()) dir.mkdirs()
 
+        val fullPath = dir.path + "/" + filename
+        val writer = FileWriter(fullPath,b)
+        val buffer = BufferedWriter(writer)
+        buffer.write(content)
+        buffer.close()
+        writer.close()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         supportActionBar?.hide() //hide the actionbar
-        val redBtn = findViewById<ImageButton>(R.id.redColor)
-        val blueBtn = findViewById<ImageButton>(R.id.blueColor)
-        val blackBtn = findViewById<ImageButton>(R.id.blackColor)
-        val eraser = findViewById<ImageButton>(R.id.whiteColor)
-        val timeBtn = findViewById<Button>(R.id.timerecord)
 
-        redBtn.setOnClickListener {
-            Toast.makeText(this,"Clicked", Toast.LENGTH_SHORT).show()
-            paintBrush.color = (Color.RED)
-            currentColor(paintBrush.color)
-        }
-        blueBtn.setOnClickListener {
-            Toast.makeText(this,"Clicked", Toast.LENGTH_SHORT).show()
-            paintBrush.color = (Color.BLUE)
-            currentColor(paintBrush.color)
-        }
-        blackBtn.setOnClickListener {
-            Toast.makeText(this,"Clicked", Toast.LENGTH_SHORT).show()
-            paintBrush.color = (Color.BLACK)
-            currentColor(paintBrush.color)
-        }
-        eraser.setOnClickListener {
-            Toast.makeText(this,"Clicked", Toast.LENGTH_SHORT).show()
+        binding.eraseButton.setOnClickListener {
             pathList.clear()
-            colorList.clear()
             path.reset()
+            PaintView.SharedData.timeList.clear()
+            PaintView.SharedData.xList.clear()
+            PaintView.SharedData.yList.clear()
         }
-        timeBtn.setOnClickListener{
-            Toast.makeText(this, PaintView.SharedData.timeList.toString(), Toast.LENGTH_LONG).show()
+        binding.recordButton.setOnClickListener{
+            val directoryName = "record"
+            val filename = "pathRecord1.csv"
+            writeTextFile(directoryName, filename, PaintView.SharedData.timeList.toString().replace("[","").replace("]",""),false)
+            writeTextFile(directoryName, filename, "\n${PaintView.SharedData.xList.toString().replace("[","").replace("]","")}",true)
+            writeTextFile(directoryName, filename, "\n${PaintView.SharedData.yList.toString().replace("[","").replace("]","")}",true)
+            PaintView.SharedData.timeList.clear()
+            PaintView.SharedData.xList.clear()
+            PaintView.SharedData.yList.clear()
         }
-    }
-
-    private fun currentColor(color: Int){
-        currentBrush = color
-        path = Path()
-
     }
 }

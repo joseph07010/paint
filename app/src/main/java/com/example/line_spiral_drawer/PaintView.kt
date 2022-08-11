@@ -6,22 +6,24 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.example.line_spiral_drawer.MainActivity.Companion.paintBrush
 import com.example.line_spiral_drawer.MainActivity.Companion.path
 import com.example.line_spiral_drawer.PaintView.SharedData.timeList
-import com.example.line_spiral_drawer.PaintView.SharedData.xcoordinate
-import com.example.line_spiral_drawer.PaintView.SharedData.ycoordinate
-import java.security.Timestamp
+import com.example.line_spiral_drawer.PaintView.SharedData.xList
+import com.example.line_spiral_drawer.PaintView.SharedData.yList
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
 
 class PaintView:View {
     var params : ViewGroup.LayoutParams? = null
 
     companion object{
         var pathList = ArrayList<Path>()
-        var colorList = ArrayList<Int>()
         var currentBrush = Color.BLACK
 
     }
@@ -46,37 +48,32 @@ class PaintView:View {
     }
     object SharedData{
         val timeList: MutableList<Long> = mutableListOf()
-        val xcoordinate: MutableList<Long> = mutableListOf()
-        val ycoordinate: MutableList<Long> = mutableListOf()
+        val xList: MutableList<Float> = mutableListOf()
+        val yList: MutableList<Float> = mutableListOf()
     }
 
 
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        var x = event.x
-        var y = event.y
-
-
+        val x = event.x
+        val y = event.y
 
         when(event.action){
             MotionEvent.ACTION_DOWN -> {
                 path.moveTo(x,y)
-
-                timeList.add(System.currentTimeMillis())
-                xcoordinate.add(x.toLong())
-                ycoordinate.add(y.toLong())
+                pathList.add(path)
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
                 path.lineTo(x,y)
-                pathList.add(path)
-                colorList.add(currentBrush)
                 timeList.add(System.currentTimeMillis())
-                xcoordinate.add(x.toLong())
-                ycoordinate.add(y.toLong())
+                xList.add(x)
+                yList.add(y)
+                Log.d("hihi","x:$x,y:$y")
             }
-            else -> return false
-
+            MotionEvent.ACTION_UP -> {
+                pathList.add(path)
+            }
         }
         postInvalidate()
         return false
@@ -85,10 +82,8 @@ class PaintView:View {
 
     override fun onDraw(canvas: Canvas) {
         for(i in pathList.indices){
-            paintBrush.setColor(colorList[i])
             canvas.drawPath(pathList[i], paintBrush)
             invalidate()
-
         }
     }
 
